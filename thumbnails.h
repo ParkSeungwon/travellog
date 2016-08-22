@@ -13,6 +13,7 @@ protected:
 	std::vector<Gtk::Image> ims;
 	std::vector<std::pair<float, float>> gps;
 	Gtk::Button bt;
+	
 	void on_bt_click();
 
 private:

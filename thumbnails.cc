@@ -3,6 +3,7 @@
 #include<map>
 #include<vector>
 #include<functional>
+#include<iostream>
 #include"thumbnails.h"
 #include"googlemap.h"
 using namespace std;
@@ -13,6 +14,7 @@ Interface* interface;
 void Thumbnails::on_bt_click()
 {
 	interface->set_map(gps);
+	cout << "clicked" << endl;
 }
 
 Thumbnails::Thumbnails(string dir) 
@@ -28,6 +30,7 @@ Thumbnails::Thumbnails(string dir)
 	}
 	vert.pop_back();
 	bt.set_label(vert);
+	bt.signal_clicked().connect(bind(&Thumbnails::sstm, this, "ls"));
 	set_size_request(900, 140);
 	auto files = getdir(dir);
 	files.erase("thumbnails");
@@ -42,6 +45,7 @@ Thumbnails::Thumbnails(string dir)
 		fgets(buf, sizeof(buf), f);
 		pclose(f);
 		string s(buf);
+		cout << s << endl;
 		int sp = s.find(' ');
 		float lat = stof(s.substr(0, sp));
 		float lng = stof(s.substr(sp+1));
