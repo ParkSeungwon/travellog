@@ -4,9 +4,16 @@
 #include<vector>
 #include<functional>
 #include"thumbnails.h"
+#include"googlemap.h"
 using namespace std;
 
 std::map<std::string, int> getdir(string dir);
+Interface* interface;
+
+void Thumbnails::on_bt_click()
+{
+	interface->set_map(gps);
+}
 
 Thumbnails::Thumbnails(string dir) 
 {
@@ -24,13 +31,22 @@ Thumbnails::Thumbnails(string dir)
 	set_size_request(900, 140);
 	auto files = getdir(dir);
 	files.erase("thumbnails");
-	sstm("mkdir "+ dir + "/thumbnails");
-	sstm("exiv2 -et " + dir + "/*");
-	sstm("mv " + dir + "/*-thumb.jpg " + dir + "/thumbnails/");
+//	sstm("mkdir "+ dir + "/thumbnails");
+//	sstm("exiv2 -et " + dir + "/*");
+//	sstm("mv " + dir + "/*-thumb.jpg " + dir + "/thumbnails/");
 	auto thumbs = getdir(dir + "/thumbnails");
 	int i=0;
 	for(auto& a : files) {
-		string s = a.first.substr(0, a.first.find_last_of('.'));
+		char buf[40];
+		FILE* f = popen(("exiv2 -pc " + dir + '/' + a.first).c_str(), "r"); 
+		fgets(buf, sizeof(buf), f);
+		pclose(f);
+		string s(buf);
+		int sp = s.find(' ');
+		float lat = stof(s.substr(0, sp));
+		float lng = stof(s.substr(sp+1));
+		gps.push_back({lat, lng});
+		s = a.first.substr(0, a.first.find_last_of('.'));
 		ims.push_back(Gtk::Image{dir + "/thumbnails/" + s + "-thumb.jpg"});
 		bts.push_back(Gtk::Button());
 		bts.back().set_image(ims.back());

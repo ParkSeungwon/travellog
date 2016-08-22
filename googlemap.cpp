@@ -1,5 +1,4 @@
-#include<webkit2/webkit2.h>
-#include<initializer_list>
+#include<vector>
 #include<string>
 #include<iostream>
 #include"googlemap.h"
@@ -11,7 +10,7 @@ Winmain::Winmain(string dir)
 {
 	directories = getdir(dir);
 	for(auto& a : directories) thumbs.push_back(Thumbnails(dir + '/' + a.first));
-	auto webview = WEBKIT_WEB_VIEW(webkit_web_view_new());
+	webview = WEBKIT_WEB_VIEW(webkit_web_view_new());
 	add(vbox1);
 	vbox1.pack_start(*Glib::wrap(GTK_WIDGET(webview)));
 	vbox1.add(scwin);
@@ -24,11 +23,16 @@ Winmain::Winmain(string dir)
 			{37.310797, 129.011924},
 			{37.325828, 129.017115}});
 	webkit_web_view_load_html(webview, content.c_str(), "");
-	set_default_size(1000, 900);
+	set_default_size(1000, 1000);
 	show_all_children();
 }
 
-string Winmain::googlemap(initializer_list<pair<float, float>> pts)
+void Winmain::set_map(vector<pair<float, float>> pl)
+{
+	webkit_web_view_load_html(webview, googlemap(pl).c_str(), "");
+}
+
+string Winmain::googlemap(vector<pair<float, float>> pts)
 {
 	string ad = "var trip = [];"
 		"var marker = [];"
@@ -46,7 +50,7 @@ string Winmain::googlemap(initializer_list<pair<float, float>> pts)
 		"path:trip, strokeColor:'#0000FF', strokeOpacity:0.8, strokeWeight:2 });"
 		"flightPath.setMap(map);"
 		"map.fitBounds(bound);";
-	return googlemap(0, 0, 12, 1000, 500, ad);
+	return googlemap(0, 0, 12, 1000, 480, ad);
 }
 
 string Winmain::googlemap(float lt, float ln, int z, int w, int h, string ad)
@@ -59,15 +63,19 @@ string Winmain::googlemap(float lt, float ln, int z, int w, int h, string ad)
 	rt += "mapTypeId:google.maps.MapTypeId.ROADMAP};"
 		"var map=new google.maps.Map(document.getElementById('googleMap'),mapProp);";
 	rt += ad + "}google.maps.event.addDomListener(window, 'load', initialize);"
-		"</script> </head> <body> <div id='googleMap' style='width:";
-	rt += to_string(w) + "px;height:" + to_string(h) + "px;'> </div></body></html>";
+		"</script> </head> <body> <div id='googleMap' style='width:100%;";
+	rt += "height:" + to_string(h) + "px;'> </div></body></html>";
 	return rt;
 }
 
 int main(int c, char** v)
 {
-	auto app = Gtk::Application::create(c, v, "");
-	Winmain window("/home/zezeon/Dropbox/Photos/6month");
+	int i=0;
+	if(c<2) return 0;
+	auto app = Gtk::Application::create(i, v, "");
+	Winmain window(v[1]);
+	extern Interface* interface;
+	interface = &window;
 	app->run(window);
 }
 

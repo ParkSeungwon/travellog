@@ -17,7 +17,7 @@ all : $(OBJ) $(GOBJ) $(EXE)
 	$(CC) $< -o $@ $(OBJ) $(GOBJ) $(CFLAG) $(GTKCFLAG) $(WEBFLAG) $(GTKLIB) $(WEBLIB)
 
 %.o : %.cc 
-	$(CC) $< -c $(CFLAG) $(GTKCFLAG)
+	$(CC) $< -c $(CFLAG) $(GTKCFLAG) $(WEBFLAG)
 
 %.o : %.c++ %.h
 	$(CC) $< -c $(CFLAG) $(GTKCFLAG)
