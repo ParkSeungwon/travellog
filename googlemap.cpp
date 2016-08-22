@@ -10,13 +10,13 @@ std::map<string, int> getdir(string dir);
 Winmain::Winmain(string dir)
 {
 	directories = getdir(dir);
-	for(auto& a : directories) {
-		auto b = getdir(dir + '/' + a.first);
-		photoes.push_back(b);
-	}
-	for(auto& a : photoes) for(auto& b : a) cout << b.first << endl;
+	for(auto& a : directories) thumbs.push_back(Thumbnails(dir + '/' + a.first));
 	auto webview = WEBKIT_WEB_VIEW(webkit_web_view_new());
-	add(*Glib::wrap(GTK_WIDGET(webview)));
+	add(vbox1);
+	vbox1.pack_start(*Glib::wrap(GTK_WIDGET(webview)));
+	vbox1.add(scwin);
+	scwin.add(vbox2);
+	for(auto& a : thumbs) vbox2.pack_start(a, Gtk::PACK_SHRINK);
 	string content = googlemap({{37.112206, 128.924017},
 			{37.097790, 128.914983},
 			{37.163722, 128.917627},
@@ -24,7 +24,7 @@ Winmain::Winmain(string dir)
 			{37.310797, 129.011924},
 			{37.325828, 129.017115}});
 	webkit_web_view_load_html(webview, content.c_str(), "");
-	set_default_size(1024, 768);
+	set_default_size(1000, 900);
 	show_all_children();
 }
 
@@ -46,7 +46,7 @@ string Winmain::googlemap(initializer_list<pair<float, float>> pts)
 		"path:trip, strokeColor:'#0000FF', strokeOpacity:0.8, strokeWeight:2 });"
 		"flightPath.setMap(map);"
 		"map.fitBounds(bound);";
-	return googlemap(0, 0, 12, 1000, 740, ad);
+	return googlemap(0, 0, 12, 1000, 500, ad);
 }
 
 string Winmain::googlemap(float lt, float ln, int z, int w, int h, string ad)

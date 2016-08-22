@@ -1,10 +1,5 @@
 #include<gtkmm.h>
 
-class MyImage : public Gtk::Image
-{
-public:
-};
-
 class Thumbnails : public Gtk::HBox
 {
 public:
@@ -13,7 +8,8 @@ public:
 protected:
 	Gtk::HBox hbox1, hbox2;
 	Gtk::ScrolledWindow scwin;
-	std::vector<Gtk::Image> images;
+	std::vector<Gtk::Button> bts;
+	std::vector<Gtk::Image> ims;
 	Gtk::Button bt;
 
 private:

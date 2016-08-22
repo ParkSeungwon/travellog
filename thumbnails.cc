@@ -2,6 +2,7 @@
 #include<string>
 #include<map>
 #include<vector>
+#include<functional>
 #include"thumbnails.h"
 using namespace std;
 
@@ -20,22 +21,26 @@ Thumbnails::Thumbnails(string dir)
 	}
 	vert.pop_back();
 	bt.set_label(vert);
-	set_size_request(600, 130);
+	set_size_request(900, 140);
 	auto files = getdir(dir);
 	files.erase("thumbnails");
 	sstm("mkdir "+ dir + "/thumbnails");
 	sstm("exiv2 -et " + dir + "/*");
 	sstm("mv " + dir + "/*-thumb.jpg " + dir + "/thumbnails/");
 	auto thumbs = getdir(dir + "/thumbnails");
+	int i=0;
 	for(auto& a : files) {
 		string s = a.first.substr(0, a.first.find_last_of('.'));
-		images.push_back(Gtk::Image(dir + "/thumbnails/" + s + "-thumb.jpg"));
+		ims.push_back(Gtk::Image{dir + "/thumbnails/" + s + "-thumb.jpg"});
+		bts.push_back(Gtk::Button());
+		bts.back().set_image(ims.back());
+		bts.back().signal_clicked().connect(bind(&Thumbnails::sstm, this, "shotwell " + dir + '/' + a.first +'&'));
 	}
 	add(hbox1);
 	hbox1.pack_start(bt, Gtk::PACK_SHRINK);
 	hbox1.pack_start(scwin);
 	scwin.add(hbox2);
-	for(auto& a : images) hbox2.pack_start(a, Gtk::PACK_SHRINK);
+	for(auto& a : bts) hbox2.pack_start(a, Gtk::PACK_SHRINK);
 }
 
 void Thumbnails::sstm(string command)
