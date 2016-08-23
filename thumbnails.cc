@@ -4,36 +4,39 @@
 #include<vector>
 #include<functional>
 #include<iostream>
+#include<algorithm>
 #include"thumbnails.h"
 #include"interface.h"
 using namespace std;
 
 std::map<std::string, int> getdir(string dir);
-Interface* interface;
+extern Interface* interface;
 
-void Thumbnails::on_bt_click()
+void Thumbnails::on_bt_click(vector<pair<float, float>> g)
 {
-	interface->set_map(gps);
-	cout << "clicked" << endl;
+	interface->set_map(g);
 }
 
 Thumbnails::Thumbnails(string dir) 
 {
 	bt.set_label(vlabel(dir));
-	bt.signal_clicked().connect(bind(&Thumbnails::on_bt_click, this));
 	auto files = getdir(dir);
 	files.erase("thumbnails");
 	auto thumbs = getdir(dir + "/thumbnails");
 	int i=0;
 	for(auto& a : files) {
 		string s = psstm("exiv2 -pc " + dir + '/' + a.first); 
-		gps.push_back(gps_coordinate(s));
+		auto gp = gps_coordinate(s);
+		if(gp.first == 0 && gp.second == 0);
+		else gps.push_back(gp);
 		s = a.first.substr(0, a.first.find_last_of('.'));
 		ims.push_back(Gtk::Image{dir + "/thumbnails/" + s + "-thumb.jpg"});
 		bts.push_back(Gtk::Button());
 		bts.back().set_image(ims.back());
-		bts.back().signal_clicked().connect(bind(&Thumbnails::sstm, this, "shotwell " + dir + '/' + a.first +'&'));
+		bts.back().signal_clicked().connect(bind(&Thumbnails::sstm, this, 
+					"shotwell " + dir + '/' + a.first +'&'));
 	}
+	bt.signal_clicked().connect(bind(&Thumbnails::on_bt_click, this, gps));
 	pack_all();
 }
 
@@ -84,9 +87,12 @@ pair<float, float> Thumbnails::gps_coordinate(string s) const
 		lat = stof(s.substr(0, sp));
 		lng = stof(s.substr(sp+1));
 	} catch(...) {
-		cout << s << "no gps data";
+		cout << "no gps data in " << s;
 	}
 	return {lat, lng};
 }
 
-	
+pair<float, float> Thumbnails::first_gps()
+{
+	return gps.empty() ? pair<float, float>{0,0} : gps[0];
+}

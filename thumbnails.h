@@ -5,6 +5,7 @@ class Thumbnails : public Gtk::HBox
 {
 public:
 	Thumbnails(std::string directory);
+	std::pair<float, float> first_gps();
 
 protected:
 	Gtk::HBox hbox1, hbox2;
@@ -14,7 +15,7 @@ protected:
 	std::vector<std::pair<float, float>> gps;
 	Gtk::Button bt;
 	
-	void on_bt_click();
+	void on_bt_click(std::vector<std::pair<float, float>> places);
 
 private:
 	void sstm(std::string command) const;

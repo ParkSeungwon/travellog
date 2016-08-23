@@ -4,10 +4,12 @@
 #include"googlemap.h"
 using namespace std;
 
+Interface* interface;
 std::map<string, int> getdir(string dir);
 
 Winmain::Winmain(string dir)
 {
+	interface = this;
 	directories = getdir(dir);
 	for(auto& a : directories) thumbs.push_back(Thumbnails(dir + '/' + a.first));
 	webview = WEBKIT_WEB_VIEW(webkit_web_view_new());
@@ -15,14 +17,12 @@ Winmain::Winmain(string dir)
 	vbox1.pack_start(*Glib::wrap(GTK_WIDGET(webview)));
 	vbox1.add(scwin);
 	scwin.add(vbox2);
-	for(auto& a : thumbs) vbox2.pack_start(a, Gtk::PACK_SHRINK);
-	set_map({{37.112206, 128.924017},
-			{37.097790, 128.914983},
-			{37.163722, 128.917627},
-			{37.218231, 128.962182},
-			{37.310797, 129.011924},
-			{37.325828, 129.017115}});
-//	webkit_web_view_load_html(webview, content.c_str(), "");
+	for(auto& a : thumbs) {
+		vbox2.pack_start(a, Gtk::PACK_SHRINK);
+		auto pa = a.first_gps();
+		if(pa.first != 0 || pa.second != 0) daily_gps.push_back(pa);
+	}
+	set_map(daily_gps);
 	set_default_size(1000, 1000);
 	show_all_children();
 }

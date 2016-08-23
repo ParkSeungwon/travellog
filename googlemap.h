@@ -8,7 +8,7 @@ class Winmain : public Gtk::Window, public Interface
 {
 public:
 	Winmain(std::string directory);
-	void set_map(std::vector<std::pair<float, float>> places);
+	virtual void set_map(std::vector<std::pair<float, float>> places);
 	
 protected:
 	std::string googlemap(float latitude, float longitude, int zoom_lvl,
@@ -21,5 +21,6 @@ protected:
 
 private:
 	std::map<std::string, int> directories;
+	std::vector<std::pair<float, float>> daily_gps;
 	std::vector<std::map<std::string, int>> photoes;
 };
