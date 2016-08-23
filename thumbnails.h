@@ -17,6 +17,9 @@ protected:
 	void on_bt_click();
 
 private:
-	void sstm(std::string command);
-	std::string vlabel(std::string dir);
+	void sstm(std::string command) const;
+	std::string psstm(std::string command) const;
+	std::string vlabel(std::string dir) const;
+	std::pair<float, float> gps_coordinate(std::string gps_string) const;
+	void pack_all();
 };
