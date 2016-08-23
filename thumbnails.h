@@ -18,4 +18,5 @@ protected:
 
 private:
 	void sstm(std::string command);
+	std::string vlabel(std::string dir);
 };

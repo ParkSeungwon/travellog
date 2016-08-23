@@ -5,7 +5,7 @@
 #include<functional>
 #include<iostream>
 #include"thumbnails.h"
-#include"googlemap.h"
+#include"interface.h"
 using namespace std;
 
 std::map<std::string, int> getdir(string dir);
@@ -17,7 +17,7 @@ void Thumbnails::on_bt_click()
 	cout << "clicked" << endl;
 }
 
-Thumbnails::Thumbnails(string dir) 
+string Thumbnails::vlabel(string dir)
 {
 	string s = dir.substr(dir.find_last_of('/') + 1);
 	s.erase(0, 2);
@@ -29,7 +29,12 @@ Thumbnails::Thumbnails(string dir)
 		}
 	}
 	vert.pop_back();
-	bt.set_label(vert);
+	return vert;
+}
+
+Thumbnails::Thumbnails(string dir) 
+{
+	bt.set_label(vlabel(dir));
 	bt.signal_clicked().connect(bind(&Thumbnails::sstm, this, "ls"));
 	set_size_request(900, 140);
 	auto files = getdir(dir);

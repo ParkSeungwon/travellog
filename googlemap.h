@@ -2,12 +2,7 @@
 #include<gtkmm.h>
 #include<webkit2/webkit2.h>
 #include"thumbnails.h"
-
-class Interface
-{
-public:
-	virtual void set_map(std::vector<std::pair<float, float>> places) = 0;
-};
+#include"interface.h"
 
 class Winmain : public Gtk::Window, public Interface
 {
