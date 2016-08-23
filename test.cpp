@@ -2,9 +2,6 @@
 #include<iostream>
 #include<functional>
 #include"thumbnails.h"
-using namespace std;
-
-void f() { cout << "clicked" << endl;}
 
 int main(int c, char** v)
 {

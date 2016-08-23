@@ -1,10 +1,7 @@
 #include<gtkmm.h>
 #include<string>
-#include<map>
 #include<vector>
 #include<functional>
-#include<iostream>
-#include<algorithm>
 #include"thumbnails.h"
 #include"interface.h"
 using namespace std;
@@ -14,7 +11,7 @@ extern Interface* interface;
 
 void Thumbnails::on_bt_click(vector<pair<float, float>> g)
 {
-	interface->set_map(g);
+	interface->set_map(g);//cannot use member variable as g
 }
 
 Thumbnails::Thumbnails(string dir) 
@@ -22,13 +19,11 @@ Thumbnails::Thumbnails(string dir)
 	bt.set_label(vlabel(dir));
 	auto files = getdir(dir);
 	files.erase("thumbnails");
-	auto thumbs = getdir(dir + "/thumbnails");
 	int i=0;
 	for(auto& a : files) {
 		string s = psstm("exiv2 -pc " + dir + '/' + a.first); 
 		auto gp = gps_coordinate(s);
-		if(gp.first == 0 && gp.second == 0);
-		else gps.push_back(gp);
+		if(gp.first != 0 && gp.second != 0) gps.push_back(gp);
 		s = a.first.substr(0, a.first.find_last_of('.'));
 		ims.push_back(Gtk::Image{dir + "/thumbnails/" + s + "-thumb.jpg"});
 		bts.push_back(Gtk::Button());
@@ -87,7 +82,7 @@ pair<float, float> Thumbnails::gps_coordinate(string s) const
 		lat = stof(s.substr(0, sp));
 		lng = stof(s.substr(sp+1));
 	} catch(...) {
-		cout << "no gps data in " << s;
+		//cout << "no gps data in " << s;
 	}
 	return {lat, lng};
 }
