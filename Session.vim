@@ -14,11 +14,11 @@ badd +1 ~/Programming/googlemap/googlemap.h
 badd +1 ~/Programming/googlemap/ls.cc
 badd +1 ~/Programming/googlemap/thumbnails.cc
 badd +1 ~/Programming/googlemap/thumbnails.h
-badd +0 ~/Programming/googlemap/test.cpp
-badd +0 ~/Programming/googlemap/test2.cpp
-badd +0 /usr/include/c++/5/functional
-badd +0 ~/Programming/googlemap/googlemap.cc
-badd +0 ~/Programming/googlemap/interface.h
+badd +1 ~/Programming/googlemap/test.cpp
+badd +1 ~/Programming/googlemap/test2.cpp
+badd +1 /usr/include/c++/5/functional
+badd +1 ~/Programming/googlemap/googlemap.cc
+badd +1 ~/Programming/googlemap/interface.h
 argglobal
 silent! argdel *
 set stal=2
@@ -60,12 +60,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 3 - ((2 * winheight(0) + 23) / 46)
+let s:l = 6 - ((5 * winheight(0) + 23) / 46)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-3
-normal! 0
+6
+normal! 05|
 tabedit ~/Programming/googlemap/googlemap.h
 set splitbelow splitright
 set nosplitbelow
@@ -82,57 +82,13 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 11 - ((10 * winheight(0) + 23) / 46)
+let s:l = 4 - ((3 * winheight(0) + 23) / 46)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-11
-normal! 05|
+4
+normal! 0
 tabedit ~/Programming/googlemap/thumbnails.cc
-set splitbelow splitright
-set nosplitbelow
-set nosplitright
-wincmd t
-set winheight=1 winwidth=1
-argglobal
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 73 - ((0 * winheight(0) + 23) / 46)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-73
-normal! 05|
-tabedit ~/Programming/googlemap/thumbnails.h
-set splitbelow splitright
-set nosplitbelow
-set nosplitright
-wincmd t
-set winheight=1 winwidth=1
-argglobal
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 8 - ((7 * winheight(0) + 23) / 46)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-8
-normal! 040|
-tabedit ~/Programming/googlemap/test.cpp
 set splitbelow splitright
 set nosplitbelow
 set nosplitright
@@ -154,6 +110,28 @@ exe s:l
 normal! zt
 1
 normal! 0
+tabedit ~/Programming/googlemap/thumbnails.h
+set splitbelow splitright
+set nosplitbelow
+set nosplitright
+wincmd t
+set winheight=1 winwidth=1
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 3 - ((2 * winheight(0) + 23) / 46)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+3
+normal! 0
 tabedit ~/Programming/googlemap/googlemap.cc
 set splitbelow splitright
 set nosplitbelow
@@ -170,11 +148,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 46 - ((45 * winheight(0) + 23) / 46)
+let s:l = 1 - ((0 * winheight(0) + 23) / 46)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-46
+1
 normal! 0
 tabedit ~/Programming/googlemap/interface.h
 set splitbelow splitright
@@ -198,7 +176,7 @@ exe s:l
 normal! zt
 1
 normal! 0
-tabnext 7
+tabnext 3
 set stal=1
 if exists('s:wipebuf')
   silent exe 'bwipe ' . s:wipebuf

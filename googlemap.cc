@@ -1,6 +1,3 @@
-#include<vector>
-#include<string>
-#include<iostream>
 #include"googlemap.h"
 using namespace std;
 
@@ -13,8 +10,10 @@ Winmain::Winmain(string dir)
 	directories = getdir(dir);
 	for(auto& a : directories) thumbs.push_back(Thumbnails(dir + '/' + a.first));
 	webview = WEBKIT_WEB_VIEW(webkit_web_view_new());
+	auto widget_now = Glib::wrap(GTK_WIDGET(webview));
 	add(vbox1);
-	vbox1.pack_start(*Glib::wrap(GTK_WIDGET(webview)));
+	widget_now->set_size_request(-1, 500);
+	vbox1.pack_start(*widget_now, Gtk::PACK_SHRINK);
 	vbox1.add(scwin);
 	scwin.add(vbox2);
 	for(auto& a : thumbs) {

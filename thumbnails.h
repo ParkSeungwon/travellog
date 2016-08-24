@@ -1,5 +1,7 @@
 #pragma once
 #include<gtkmm.h>
+#include<string>
+#include<vector>
 
 class Thumbnails : public Gtk::HBox
 {
@@ -12,8 +14,8 @@ protected:
 	Gtk::ScrolledWindow scwin;
 	std::vector<Gtk::Button> bts;
 	std::vector<Gtk::Image> ims;
-	std::vector<std::pair<float, float>> gps;
 	Gtk::Button bt;
+	std::vector<std::pair<float, float>> gps;
 	
 	void on_bt_click(std::vector<std::pair<float, float>> places);
 

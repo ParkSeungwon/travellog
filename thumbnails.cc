@@ -1,6 +1,3 @@
-#include<gtkmm.h>
-#include<string>
-#include<vector>
 #include<functional>
 #include"thumbnails.h"
 #include"interface.h"
@@ -11,7 +8,7 @@ extern Interface* interface;
 
 void Thumbnails::on_bt_click(vector<pair<float, float>> g)
 {
-	interface->set_map(g);//cannot use member variable as g
+	interface->set_map(g);//cannot use member variable as g why?
 }
 
 Thumbnails::Thumbnails(string dir) 
@@ -51,7 +48,7 @@ void Thumbnails::sstm(string command) const
 }
 
 string Thumbnails::psstm(string command) const
-{
+{//return system call output as string
 	char buf[100];
 	FILE* f = popen(command.c_str(), "r");
 	fgets(buf, sizeof(buf), f);
@@ -60,7 +57,7 @@ string Thumbnails::psstm(string command) const
 }
 
 string Thumbnails::vlabel(string dir) const
-{
+{//date -> vertical label
 	string s = dir.substr(dir.find_last_of('/') + 1);
 	s.erase(0, 2);
 	string vert;
