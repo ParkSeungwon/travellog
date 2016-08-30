@@ -28,4 +28,5 @@ private:
 	std::vector<std::pair<float, float>> daily_gps;
 	std::vector<std::map<std::string, int>> photoes;
 	std::string vlabel(std::string dir) const;
+	int multibyte(char ch) const;
 };

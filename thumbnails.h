@@ -8,6 +8,7 @@ class Thumbnails : public Gtk::HBox
 public:
 	Thumbnails(std::string directory);
 	std::pair<float, float> first_gps();
+	static std::string psstm(std::string command);
 
 protected:
 	Gtk::HBox hbox1, hbox2;
@@ -21,7 +22,6 @@ protected:
 
 private:
 	void sstm(std::string command) const;
-	std::string psstm(std::string command) const;
 	std::string vlabel(std::string dir) const;
 	std::pair<float, float> gps_coordinate(std::string gps_string) const;
 	void pack_all();

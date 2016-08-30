@@ -47,7 +47,7 @@ void Thumbnails::sstm(string command) const
 	system(command.data());
 }
 
-string Thumbnails::psstm(string command) const
+string Thumbnails::psstm(string command)
 {//return system call output as string
 	char buf[100];
 	FILE* f = popen(command.c_str(), "r");

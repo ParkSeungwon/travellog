@@ -40,18 +40,20 @@ string Winmain::vlabel(string dir) const
 	if(dir.back() == '/') dir.pop_back();
 	string s = dir.substr(dir.find_last_of('/') + 1);
 	string vert;
-	for(auto it = s.begin(); it != s.end(); it++) {
-		vert += *it;
-		int j = 0;
-		for(int i=7; *it & 1<<i && i>0; i--) j++;//check multibyte character
-		for(int i=1; i<j; i++) {
-			it++;
-			vert += *it;
-		}
+	for(auto it = s.begin(); it != s.end();) {
+		int n = multibyte(*it);
+		for(int i=0; i<n; i++, it++)  vert += *it;
 		vert += '\n';
 	}
 	vert.pop_back();
 	return vert;
+}
+
+int Winmain::multibyte(char c) const
+{//multibyte character check. return n byte.
+	int r=1;
+	if(c & 1<<7) for(int i=6; c & 1<<i && i>3; i--) r++;
+	return r;
 }
 
 string Winmain::googlemap(vector<pair<float, float>> pts)
