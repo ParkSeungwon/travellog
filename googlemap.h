@@ -22,6 +22,7 @@ protected:
 	Gtk::Button bt;
 	std::vector<Thumbnails> thumbs;
 	WebKitWebView* webview;
+	Gtk::Widget* widget_now;
 
 private:
 	std::map<std::string, int> directories;
@@ -29,4 +30,5 @@ private:
 	std::vector<std::map<std::string, int>> photoes;
 	std::string vlabel(std::string dir) const;
 	int multibyte(char ch) const;
+	void pack_all();
 };

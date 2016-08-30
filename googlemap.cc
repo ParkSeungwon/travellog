@@ -4,30 +4,22 @@ using namespace std;
 Interface* interface;
 std::map<string, int> getdir(string dir);
 
-Winmain::Winmain(string dir) 
+Winmain::Winmain(string dir) : bt(vlabel(dir))
 {
 	interface = this;
 	directories = getdir(dir);
 	for(auto& a : directories) thumbs.push_back(Thumbnails(dir + '/' + a.first));
 	webview = WEBKIT_WEB_VIEW(webkit_web_view_new());
-	auto widget_now = Glib::wrap(GTK_WIDGET(webview));
-	add(vbox1);
-	widget_now->set_size_request(-1, 500);
-	vbox1.pack_start(hbox, Gtk::PACK_SHRINK);
-	bt.set_label(vlabel(dir));
-	hbox.pack_start(bt, Gtk::PACK_SHRINK);
-	hbox.pack_start(*widget_now);
-	vbox1.add(scwin);
-	scwin.add(vbox2);
+	widget_now = Glib::wrap(GTK_WIDGET(webview));
+
 	for(auto& a : thumbs) {
-		vbox2.pack_start(a, Gtk::PACK_SHRINK);
 		auto pa = a.first_gps();
 		if(pa.first != 0 || pa.second != 0) daily_gps.push_back(pa);
 	}
 	set_map(daily_gps);
 	bt.signal_clicked().connect(bind(&Winmain::set_map, this, daily_gps));
-	set_default_size(1000, 1000);
-	show_all_children();
+
+	pack_all();
 }
 
 void Winmain::set_map(vector<pair<float, float>> pl)
@@ -92,3 +84,16 @@ string Winmain::googlemap(float lt, float ln, int z, int w, int h, string ad)
 	return rt;
 }
 
+void Winmain::pack_all() 
+{
+	add(vbox1);
+	vbox1.pack_start(hbox, Gtk::PACK_SHRINK);
+	hbox.pack_start(bt, Gtk::PACK_SHRINK);
+	hbox.pack_start(*widget_now);
+	vbox1.add(scwin);
+	scwin.add(vbox2);
+	for(auto& a : thumbs) vbox2.pack_start(a, Gtk::PACK_SHRINK);
+	widget_now->set_size_request(-1, 500);
+	set_default_size(1000, 1000);
+	show_all_children();
+}
