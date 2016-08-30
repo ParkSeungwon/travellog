@@ -4,7 +4,7 @@ using namespace std;
 Interface* interface;
 std::map<string, int> getdir(string dir);
 
-Winmain::Winmain(string dir)
+Winmain::Winmain(string dir) 
 {
 	interface = this;
 	directories = getdir(dir);
@@ -13,7 +13,10 @@ Winmain::Winmain(string dir)
 	auto widget_now = Glib::wrap(GTK_WIDGET(webview));
 	add(vbox1);
 	widget_now->set_size_request(-1, 500);
-	vbox1.pack_start(*widget_now, Gtk::PACK_SHRINK);
+	vbox1.pack_start(hbox, Gtk::PACK_SHRINK);
+	bt.set_label(vlabel(dir));
+	hbox.pack_start(bt, Gtk::PACK_SHRINK);
+	hbox.pack_start(*widget_now);
 	vbox1.add(scwin);
 	scwin.add(vbox2);
 	for(auto& a : thumbs) {
@@ -22,6 +25,7 @@ Winmain::Winmain(string dir)
 		if(pa.first != 0 || pa.second != 0) daily_gps.push_back(pa);
 	}
 	set_map(daily_gps);
+	bt.signal_clicked().connect(bind(&Winmain::set_map, this, daily_gps));
 	set_default_size(1000, 1000);
 	show_all_children();
 }
@@ -29,6 +33,25 @@ Winmain::Winmain(string dir)
 void Winmain::set_map(vector<pair<float, float>> pl)
 {
 	webkit_web_view_load_html(webview, googlemap(pl).c_str(), "");
+}
+
+string Winmain::vlabel(string dir) const
+{
+	if(dir.back() == '/') dir.pop_back();
+	string s = dir.substr(dir.find_last_of('/') + 1);
+	string vert;
+	for(auto it = s.begin(); it != s.end(); it++) {
+		vert += *it;
+		int j = 0;
+		for(int i=7; *it & 1<<i && i>0; i--) j++;//check multibyte character
+		for(int i=1; i<j; i++) {
+			it++;
+			vert += *it;
+		}
+		vert += '\n';
+	}
+	vert.pop_back();
+	return vert;
 }
 
 string Winmain::googlemap(vector<pair<float, float>> pts)
